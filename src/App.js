@@ -1,245 +1,90 @@
-import {
-  Fab,
-  Grid,
-  IconButton,
-  MenuItem,
-  Select,
-  Toolbar,
-  Typography,
-  AppBar,
-  Box,
-  Button,
-  Card,
-  CardActions,
-  CardContent,
-  Container,
-  Accordion,
-  AccordionDetails,
-  AccordionSummary
-} from "@material-ui/core";
-import Add from "@material-ui/icons/Add";
-import ExpandMore from "@material-ui/icons/ExpandMore";
+import DisplayCourses from "./pages/DisplayCourses.js";
+import UpsertCourse from "./pages/UpsertCourse";
+import { Route, Switch } from "react-router";
+import { Container} from "@material-ui/core";
+import React from "react";
+import { create, getAll, remove, update } from "./services/api.js";
 
-const styles = {
-  fab: {
-    position: "fixed",
-    bottom: "3rem",
-    right: "3rem",
-  },
-  card: {
-    margin: "1rem",
-    width: "16rem",
-  },
-  cardContent: {
-    minHeight: "8rem",
-  },
-  cardActions: {
-    height: "3rem",
-  },
-  iconButton: {
-    marginLeft: "auto",
-    width: "3rem",
-    height: "3rem",
-    borderRadius: "50%",
-  },
-  expandMore: {
-    position: "absolute",
-    left: "0",
-    top: "0",
-    width: "100%",
-    height: "100%",
-    padding: "0.5rem",
-  },
-  select: {
-    width: "100%",
-    height: "100%",
-    opacity: "0",
-    cursor: "pointer",
-  },
-};
+class App extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      selectedCourses: [],
+      courses: [],
+    };
+  }
 
-function App() {
-  return (
-    <Container>
-      <AppBar position="sticky">
-        <Toolbar>
-          <Box py={3}>
-            <Typography variant="h4">Course Planner</Typography>
-          </Box>
-        </Toolbar>
-      </AppBar>
-      <Accordion defaultExpanded={true}>
-        <AccordionSummary expandIcon={<ExpandMore />}>
-          <Box py={2}>
-            <Typography variant="h6">Currently Enrolled</Typography>
-          </Box>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Grid
-            container
-            direction="row"
-            justifyContent="center"
-            alignItems="center"
-          >
-            <Grid item>
-              <Card style={styles.card}>
-                <Box bgcolor={"info.main"}>
-                  <CardContent style={styles.cardContent}>
-                    <Typography color="textSecondary" gutterBottom>
-                      601.280
-                    </Typography>
-                    <Typography variant="h5">Full-Stack JavaScript</Typography>
-                  </CardContent>
-                </Box>
-                <CardActions style={styles.cardActions}>
-                  <Button disabled>Fall 2021</Button>
-                  <IconButton style={styles.iconButton}>
-                    <ExpandMore style={styles.expandMore} />
-                    <Select style={styles.select} value={"enrolled"}>
-                      <MenuItem value="move" disabled>
-                        <Typography variant="body1">Move to...</Typography>
-                      </MenuItem>
-                      <MenuItem value="enrolled">
-                        <Typography variant="body1">
-                          Currently Enrolled
-                        </Typography>
-                      </MenuItem>
-                      <MenuItem value="interested">
-                        <Typography variant="body1">Want to Take</Typography>
-                      </MenuItem>
-                      <MenuItem value="taken">
-                        <Typography variant="body1">Already Took</Typography>
-                      </MenuItem>
-                      <MenuItem value="none">
-                        <Box fontStyle="italic">
-                          <Typography variant="body1">None</Typography>
-                        </Box>
-                      </MenuItem>
-                    </Select>
-                  </IconButton>
-                </CardActions>
-              </Card>
-            </Grid>
-          </Grid>
-        </AccordionDetails>
-      </Accordion>
-      <Accordion defaultExpanded={true}>
-        <AccordionSummary expandIcon={<ExpandMore />}>
-          <Box py={2}>
-            <Typography variant="h6">Want to Take</Typography>
-          </Box>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Grid
-            container
-            direction="row"
-            justifyContent="center"
-            alignItems="center"
-          >
-            <Grid item>
-              <Card style={styles.card}>
-                <Box bgcolor={"warning.main"}>
-                  <CardContent style={styles.cardContent}>
-                    <Typography color="textSecondary" gutterBottom>
-                      601.421
-                    </Typography>
-                    <Typography variant="h5">
-                      Object-Oriented Software Engineering
-                    </Typography>
-                  </CardContent>
-                </Box>
-                <CardActions style={styles.cardActions}>
-                  <Button disabled>Spring 2021</Button>
-                  <IconButton style={styles.iconButton}>
-                    <ExpandMore style={styles.expandMore} />
-                    <Select style={styles.select} value={"interested"}>
-                      <MenuItem value="move" disabled>
-                        <Typography variant="body1">Move to...</Typography>
-                      </MenuItem>
-                      <MenuItem value="enrolled">
-                        <Typography variant="body1">
-                          Currently Enrolled
-                        </Typography>
-                      </MenuItem>
-                      <MenuItem value="interested">
-                        <Typography variant="body1">Want to Take</Typography>
-                      </MenuItem>
-                      <MenuItem value="taken">
-                        <Typography variant="body1">Already Took</Typography>
-                      </MenuItem>
-                      <MenuItem value="none">
-                        <Box fontStyle="italic">
-                          <Typography variant="body1">None</Typography>
-                        </Box>
-                      </MenuItem>
-                    </Select>
-                  </IconButton>
-                </CardActions>
-              </Card>
-            </Grid>
-          </Grid>
-        </AccordionDetails>
-      </Accordion>
-      <Accordion defaultExpanded={true}>
-        <AccordionSummary expandIcon={<ExpandMore />}>
-          <Box py={2}>
-            <Typography variant="h6">Already Took</Typography>
-          </Box>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Grid
-            container
-            direction="row"
-            justifyContent="center"
-            alignItems="center"
-          >
-            <Grid item>
-              <Card style={styles.card}>
-                <Box bgcolor={"success.main"}>
-                  <CardContent style={styles.cardContent}>
-                    <Typography color="textSecondary" gutterBottom>
-                      601.226
-                    </Typography>
-                    <Typography variant="h5">Data Structures</Typography>
-                  </CardContent>
-                </Box>
-                <CardActions style={styles.cardActions}>
-                  <Button disabled>Fall 2019</Button>
-                  <IconButton style={styles.iconButton}>
-                    <ExpandMore style={styles.expandMore} />
-                    <Select style={styles.select} value={"taken"}>
-                      <MenuItem value="move" disabled>
-                        <Typography variant="body1">Move to...</Typography>
-                      </MenuItem>
-                      <MenuItem value="enrolled">
-                        <Typography variant="body1">
-                          Currently Enrolled
-                        </Typography>
-                      </MenuItem>
-                      <MenuItem value="interested">
-                        <Typography variant="body1">Want to Take</Typography>
-                      </MenuItem>
-                      <MenuItem value="taken">
-                        <Typography variant="body1">Already Took</Typography>
-                      </MenuItem>
-                      <MenuItem value="none">
-                        <Box fontStyle="italic">
-                          <Typography variant="body1">None</Typography>
-                        </Box>
-                      </MenuItem>
-                    </Select>
-                  </IconButton>
-                </CardActions>
-              </Card>
-            </Grid>
-          </Grid>
-        </AccordionDetails>
-      </Accordion>
-      <Fab style={styles.fab} color="primary">
-        <Add />
-      </Fab>
-    </Container>
-  );
+  componentDidMount() {
+    this.updateSelectedCourses();
+  }
+
+  updateCourses = (courses) => {
+    this.setState({
+      courses: this.filterCourses(this.state.selectedCourses, courses),
+    });
+  };
+
+  updateSelectedCourses = () => {
+    getAll().then((data) => {
+      this.setState({
+        selectedCourses: data,
+        courses: this.filterCourses(data, this.state.courses),
+      });
+    });
+  };
+
+  filterCourses = (selectedCourses, courses) => {
+    return courses.map((course) => {
+      let match = selectedCourses.find(
+        (check) =>
+          check.number === course.number &&
+          check.title === course.title &&
+          check.term === course.term
+      );
+      if (match === undefined) {
+        return { ...course, status: "none" };
+      }
+      return match;
+    });
+  };
+
+  updateStatus = (course, newStatus) => {
+    return () => {
+      if (newStatus !== course.status) {
+        if (course.status === "none") {
+          course.status = newStatus;
+          create(course).then(this.updateSelectedCourses);
+        } else if (newStatus === "none") {
+          remove(course).then(this.updateSelectedCourses);
+        } else {
+          update(course, newStatus).then(this.updateSelectedCourses);
+        }
+      }
+    };
+  };
+
+  render() {
+    return (
+      <Container>
+        <Switch>
+          <Route exact path="/">
+            <DisplayCourses
+              courses={this.state.selectedCourses}
+              updateStatus={this.updateStatus}
+            />
+          </Route>
+
+          <Route exact path="/search">
+            <UpsertCourse
+              courses={this.state.courses}
+              updateStatus={this.updateStatus}
+              updateCourses={this.updateCourses}
+            />
+          </Route>
+        </Switch>
+      </Container>
+    );
+  }
 }
 
 export default App;

@@ -1,51 +1,52 @@
-import { List, Fab, withStyles } from "@material-ui/core";
-import { Add } from "@material-ui/icons";
-import Note from "../components/Note";
-import Search from "../components/Search";
+import React from "react";
+import Header from "../components/Header.js";
 import { Link } from "react-router-dom";
-import { Component } from "react";
+import CourseBlock from "../components/CourseBlock.js";
+import Add from "@material-ui/icons/Add";
+import Fab from "@material-ui/core/Fab";
 
 const styles = {
   fab: {
-    position: "absolute",
-    bottom: "2rem",
-    right: "2rem",
+    position: "fixed",
+    bottom: "3rem",
+    right: "3rem",
   },
 };
 
-class DisplayNotes extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      query: "",
+class DisplayCourses extends React.Component {
+
+    pickCourses = (status) => {
+        return (
+            this.props.courses.filter(
+                (course) => course.status === status
+              )
+        );
     };
-  }
-
-  updateQuery = (query) => {
-    this.setState({ query });
-  };
-
-  includes = (note) => {
-    const query = this.state.query.trim().toLowerCase();
-    return (
-      query === "" ||
-      note.title.toLowerCase().includes(query) ||
-      note.text.toLowerCase().includes(query)
-    );
-  };
 
   render() {
-    const { notes, deleteNote, classes } = this.props;
     return (
       <>
-        <Search query={this.state.query} updateQuery={this.updateQuery} />
-        <List>
-          {notes.filter(this.includes).map((note, index) => {
-            return <Note note={note} key={index} deleteNote={deleteNote} />;
-          })}
-        </List>
-        <Link to="/add">
-          <Fab aria-label={"Add"} className={classes.fab}>
+        <Header />
+        <CourseBlock
+          updateStatus={this.props.updateStatus}
+          category="Currently Enrolled"
+          courses={this.pickCourses("enrolled")}
+        />
+
+        <CourseBlock
+          updateStatus={this.props.updateStatus}
+          category="Want to Take"
+          courses={this.pickCourses("interested")}
+        />
+
+        <CourseBlock
+          updateStatus={this.props.updateStatus}
+          category="Already Took"
+          courses={this.pickCourses("taken")}
+        />
+
+        <Link to="/search">
+          <Fab style={styles.fab} color="primary">
             <Add />
           </Fab>
         </Link>
@@ -54,4 +55,6 @@ class DisplayNotes extends Component {
   }
 }
 
-export default withStyles(styles)(DisplayNotes);
+export default DisplayCourses;
+
+

@@ -3,7 +3,7 @@ import axios from "axios";
 const axiosInstance = axios.create({
   baseURL: "https://courses-api-hw4.herokuapp.com",
   headers: {
-    Authorization: jluo30,
+    Authorization: "jluo30",
   },
 });
 
@@ -62,4 +62,4 @@ async function search(query, page = 1, limit = 20) {
   }
 }
 
-export { setToken, get, getAll, create, remove, update, search };
+export { get, getAll, create, remove, update, search };
