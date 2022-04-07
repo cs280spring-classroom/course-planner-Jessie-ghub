@@ -18,8 +18,7 @@ class DisplayCourses extends React.Component {
     pickCourses = (status) => {
         return (
             this.props.courses.filter(
-                (course) => course.status === status
-              )
+                (course) => course.status === status)
         );
     };
 

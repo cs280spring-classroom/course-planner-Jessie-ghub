@@ -28,6 +28,10 @@ class UpsertCourse extends React.Component {
     });
   };
 
+  updatePage = (pageNum) => {
+    this.setState({ page: pageNum }, () => this.updateQuery(this.state.query));
+  };
+
   render() {
     return (
       <Container>
@@ -43,7 +47,7 @@ class UpsertCourse extends React.Component {
               size="large"
               page={this.state.page}
               count={this.state.totalPages}
-              onChange={this.pageUpdate}
+              onChange={this.updatePage}
             />
           </Box>
         </Box>
@@ -53,11 +57,10 @@ class UpsertCourse extends React.Component {
           justifyContent="center"
           alignItems="center"
         >
-          {this.props.courses.map((course, key) => (
+          {this.props.courses.map((course) => (
             <Course
               course={course}
               updateStatus={this.props.updateStatus}
-              key={key}
             />
           ))}
         </Grid>
@@ -65,9 +68,6 @@ class UpsertCourse extends React.Component {
     );
   }
 
-  pageUpdate = (event, value) => {
-    this.setState({ page: value }, () => this.updateQuery(this.state.query));
-  };
 }
 
 export default UpsertCourse;
