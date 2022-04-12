@@ -4,6 +4,8 @@ import { Route, Switch } from 'react-router';
 import { Container } from '@material-ui/core';
 import React from 'react';
 import { create, getAll, remove, update } from './services/api.js';
+import Typography from "@material-ui/core/Typography";
+import { Link } from "react-router-dom";
 
 class App extends React.Component {
 	constructor() {
@@ -15,30 +17,30 @@ class App extends React.Component {
 	}
 
 	componentDidMount() {
-		this.updateSelectedCourses();
+		this.callAPI();
 	}
 
 	updateCourses = (courses) => {
 		this.setState({
-			courses: this.filterCourses(this.state.selectedCourses, courses)
+			courses: this.getAllStatus(this.state.selectedCourses, courses)
 		});
 	};
 
-	updateSelectedCourses = () => {
+	callAPI = () => {
 		getAll().then((data) => {
 			this.setState({
 				selectedCourses: data,
-				courses: this.filterCourses(data, this.state.courses)
+				courses: this.getAllStatus(data, this.state.courses)
 			});
 		});
 	};
 
-	filterCourses = (selectedCourses, courses) => {
-		return courses.map((course) => {
+	getAllStatus = (selectedCourses, courses) => {
+		return courses.map((course, index) => {
 			let match = selectedCourses.find(
 				(check) => check.number === course.number && check.title === course.title && check.term === course.term
 			);
-			if (match === undefined) {
+			if (!match) {
 				return { ...course, status: 'none' };
 			}
 			return match;
@@ -50,11 +52,11 @@ class App extends React.Component {
 			if (newStatus !== course.status) {
 				if (course.status === 'none') {
 					course.status = newStatus;
-					create(course).then(this.updateSelectedCourses);
+					create(course).then(this.callAPI);
 				} else if (newStatus === 'none') {
-					remove(course).then(this.updateSelectedCourses);
+					remove(course).then(this.callAPI);
 				} else {
-					update(course, newStatus).then(this.updateSelectedCourses);
+					update(course, newStatus).then(this.callAPI);
 				}
 			}
 		};
@@ -74,6 +76,13 @@ class App extends React.Component {
 							updateStatus={this.updateStatus}
 							updateCourses={this.updateCourses}
 						/>
+					</Route>
+
+					<Route>
+						<Container>
+							<Typography> 404 - Not Found! ＞ˍ＜ </Typography>
+							<Link to="/"> Back to Homepage</Link>
+						</Container>
 					</Route>
 				</Switch>
 			</Container>

@@ -19,8 +19,8 @@ class CourseBlock extends React.Component {
 				</AccordionSummary>
 				<AccordionDetails>
 					<Grid container direction="row" justifyContent="center" alignItems="center">
-						{this.props.courses.map((course) => (
-							<Course course={course} updateStatus={this.props.updateStatus} />
+						{this.props.courses.map((course, index) => (
+							<Course course={course} key= {index} updateStatus={this.props.updateStatus} />
 						))}
 					</Grid>
 				</AccordionDetails>

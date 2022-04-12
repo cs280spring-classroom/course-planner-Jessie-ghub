@@ -57,9 +57,10 @@ class UpsertCourse extends React.Component {
           justifyContent="center"
           alignItems="center"
         >
-          {this.props.courses.map((course) => (
+          {this.props.courses.map((course,index) => (
             <Course
               course={course}
+              key= {index}
               updateStatus={this.props.updateStatus}
             />
           ))}
