@@ -55,8 +55,10 @@ class Course extends React.Component {
 								'success.main'
 							) : this.props.course.status === 'enrolled' ? (
 								'info.main'
-							) : (
+							) : this.props.course.status === 'interested' ? (
 								'warning.main'
+							) : (
+								'text.disabled'
 							)
 						}
 					>
